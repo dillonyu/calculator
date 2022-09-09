@@ -1,4 +1,4 @@
-let displayNum = 0;
+const display = document.querySelector('.display');
 
 function add(a, b) {
     return a + b;
@@ -26,20 +26,42 @@ function operate(operator, a, b) {
 }
 
 function updateDisplay(text) {
-    const display = document.querySelector('.display');
-    console.log(display.textContent.length);
     if (display.textContent === '0') display.textContent = text;
+    else if (display.textContent === '-0' && text != '.') display.textContent = `-${text}`;
     else if (display.textContent.length < 10) display.textContent += text;
+}
+
+function clearDisplay() {
+    display.textContent = 0;
+}
+
+function negateDisplay() {
+    if (display.textContent.charAt(0) === '-') {
+        display.textContent = display.textContent.slice(1);
+    } else {
+        display.textContent = `-${display.textContent}`;
+    }
 }
 
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
-        displayNum = button.textContent;
-        if (isNaN(displayNum)) {
-            // do something
+        let buttonText = button.textContent;
+        if (isNaN(buttonText)) {
+            switch(buttonText) {
+                case 'AC': 
+                    clearDisplay(display);
+                    return;
+                case '+/-': 
+                    negateDisplay();
+                    return;
+                case '.':
+                    if (!display.textContent.includes('.')) display.textContent += '.';
+                    return;
+                // TODO: add operation cases
+            }
         } else {
-            updateDisplay(displayNum);
+            updateDisplay(buttonText);
         }
     });
 });
