@@ -1,4 +1,4 @@
-const display = document.querySelector('.display');
+const display = document.querySelector('.display .main');
 
 function add(a, b) {
     return a + b;
@@ -21,7 +21,7 @@ function operate(operator, a, b) {
         case '+': return add(a, b);
         case '-': return subtract(a, b);
         case '*': return multiply(a, b);
-        case '/': return divide(a, b);
+        case '÷': return divide(a, b);
     }
 }
 
@@ -58,7 +58,6 @@ buttons.forEach((button) => {
                 case '.':
                     if (!display.textContent.includes('.')) display.textContent += '.';
                     return;
-                // TODO: add operation cases
             }
         } else {
             updateDisplay(buttonText);
