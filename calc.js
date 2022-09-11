@@ -1,4 +1,6 @@
-const display = document.querySelector('.display .main');
+const mainDisplay = document.querySelector('.display .main');
+const topDisplay = document.querySelector('.display .top pre');
+let operating = false;
 
 function add(a, b) {
     return a + b;
@@ -26,20 +28,24 @@ function operate(operator, a, b) {
 }
 
 function updateDisplay(text) {
-    if (display.textContent === '0') display.textContent = text;
-    else if (display.textContent === '-0' && text != '.') display.textContent = `-${text}`;
-    else if (display.textContent.length < 10) display.textContent += text;
+    if (mainDisplay.textContent === '0' || operating) {
+        mainDisplay.textContent = text;
+        operating = false;
+    }
+    else if (mainDisplay.textContent === '-0' && text != '.') mainDisplay.textContent = `-${text}`;
+    else if (mainDisplay.textContent.length < 10) mainDisplay.textContent += text;
 }
 
 function clearDisplay() {
-    display.textContent = 0;
+    mainDisplay.textContent = 0;
+    topDisplay.textContent = '';
 }
 
 function negateDisplay() {
-    if (display.textContent.charAt(0) === '-') {
-        display.textContent = display.textContent.slice(1);
+    if (mainDisplay.textContent.charAt(0) === '-') {
+        mainDisplay.textContent = mainDisplay.textContent.slice(1);
     } else {
-        display.textContent = `-${display.textContent}`;
+        mainDisplay.textContent = `-${mainDisplay.textContent}`;
     }
 }
 
@@ -50,14 +56,17 @@ buttons.forEach((button) => {
         if (isNaN(buttonText)) {
             switch(buttonText) {
                 case 'AC': 
-                    clearDisplay(display);
+                    clearDisplay(mainDisplay);
                     return;
                 case '+/-': 
                     negateDisplay();
                     return;
                 case '.':
-                    if (!display.textContent.includes('.')) display.textContent += '.';
+                    if (!mainDisplay.textContent.includes('.')) mainDisplay.textContent += '.';
                     return;
+                default:
+                    topDisplay.textContent += `${mainDisplay.textContent} ${buttonText} `;
+                    operating = true; 
             }
         } else {
             updateDisplay(buttonText);
