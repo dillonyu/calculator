@@ -1,6 +1,7 @@
 const mainDisplay = document.querySelector('.display .main');
 const topDisplay = document.querySelector('.display .top pre');
 let operating = false;
+let equation = [];
 
 function add(a, b) {
     return a + b;
@@ -20,7 +21,7 @@ function divide(a, b) {
 
 function operate(operator, a, b) {
     switch(operator) {
-        case '+': return add(a, b);
+        case '+': return add(+a, +b);
         case '-': return subtract(a, b);
         case '*': return multiply(a, b);
         case '÷': return divide(a, b);
@@ -64,8 +65,17 @@ buttons.forEach((button) => {
                 case '.':
                     if (!mainDisplay.textContent.includes('.')) mainDisplay.textContent += '.';
                     return;
+                case '=':
+                    topDisplay.textContent += `${mainDisplay.textContent} ${buttonText} `;
+                    equation.push(mainDisplay.textContent);
+                    const result = operate(equation[1], equation[0], equation[2]);
+                    mainDisplay.textContent = result;
+                    equation = [];
+                    return;
                 default:
                     topDisplay.textContent += `${mainDisplay.textContent} ${buttonText} `;
+                    equation.push(mainDisplay.textContent);
+                    equation.push(buttonText);
                     operating = true; 
             }
         } else {
