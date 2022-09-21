@@ -1,7 +1,9 @@
 const mainDisplay = document.querySelector('.display .main');
 const topDisplay = document.querySelector('.display .top pre');
-let operating = false;
-let equation = [];
+let operating = false;  // if an operation is currently taking place
+let completedOperation = false; // if an operation was just completed
+let curResult = 0;  // the current saved result after an operation
+let equation = [];  // equation array with format [operand 1, operator, operand 2]
 
 function add(a, b) {
     return a + b;
@@ -31,10 +33,14 @@ function operate(operator, a, b) {
 function updateDisplay(text) {
     if (mainDisplay.textContent === '0' || operating) {
         mainDisplay.textContent = text;
+        topDisplay.textContent += text;
         operating = false;
     }
     else if (mainDisplay.textContent === '-0' && text != '.') mainDisplay.textContent = `-${text}`;
-    else if (mainDisplay.textContent.length < 10) mainDisplay.textContent += text;
+    else if (mainDisplay.textContent.length < 10) { // prevents overflowing
+        mainDisplay.textContent += text;
+        topDisplay.textContent += text;
+    }
 }
 
 function clearDisplay() {
@@ -66,14 +72,19 @@ buttons.forEach((button) => {
                     if (!mainDisplay.textContent.includes('.')) mainDisplay.textContent += '.';
                     return;
                 case '=':
-                    topDisplay.textContent += `${mainDisplay.textContent} ${buttonText} `;
                     equation.push(mainDisplay.textContent);
-                    const result = operate(equation[1], equation[0], equation[2]);
-                    mainDisplay.textContent = result;
+                    curResult = operate(equation[1], equation[0], equation[2]);
+                    mainDisplay.textContent = curResult;
+                    topDisplay.textContent += ` ${buttonText} ${curResult}`;
                     equation = [];
+                    completedOperation = true;
                     return;
-                default:
-                    topDisplay.textContent += `${mainDisplay.textContent} ${buttonText} `;
+                default: // an operation button was pressed
+                    if (completedOperation) {
+                        topDisplay.textContent = `${curResult} ${buttonText} `;
+                    } else {
+                        topDisplay.textContent += ` ${buttonText} `;
+                    }
                     equation.push(mainDisplay.textContent);
                     equation.push(buttonText);
                     operating = true; 
