@@ -1,5 +1,5 @@
-const mainDisplay = document.querySelector('.display .main');
-const topDisplay = document.querySelector('.display .top pre');
+const mainDisplay = document.querySelector('.display .main');   // the larger bottom display
+const topDisplay = document.querySelector('.display .top pre'); // the smaller top display
 let operating = false;  // if an operation is currently taking place
 let completedOperation = false; // if an operation was just completed
 let curResult = 0;  // the current saved result after an operation
@@ -35,9 +35,9 @@ function updateDisplay(text) {
         mainDisplay.textContent = text;
         topDisplay.textContent += text;
         operating = false;
-    }
-    else if (mainDisplay.textContent === '-0' && text != '.') mainDisplay.textContent = `-${text}`;
-    else if (mainDisplay.textContent.length < 10) { // prevents overflowing
+    } else if (mainDisplay.textContent === '-0' && text != '.') {
+        mainDisplay.textContent = `-${text}`;
+    } else if (mainDisplay.textContent.length < 10) { // prevents overflowing
         mainDisplay.textContent += text;
         topDisplay.textContent += text;
     }
@@ -50,6 +50,7 @@ function clearDisplay() {
 
 function negateDisplay() {
     if (mainDisplay.textContent.charAt(0) === '-') {
+        // if the displayed num is currently negative, remove the negative sign    
         mainDisplay.textContent = mainDisplay.textContent.slice(1);
     } else {
         mainDisplay.textContent = `-${mainDisplay.textContent}`;
