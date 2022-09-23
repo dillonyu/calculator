@@ -14,6 +14,7 @@ button {
 }
 
 .display {
+    overflow: hidden;   /* used for calculation result */
     width: 310px;
     padding-right: 3px;
     border: 1px solid black;

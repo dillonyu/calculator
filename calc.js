@@ -37,7 +37,7 @@ function updateDisplay(text) {
         operating = false;
     } else if (mainDisplay.textContent === '-0' && text != '.') {
         mainDisplay.textContent = `-${text}`;
-    } else if (mainDisplay.textContent.length < 10) { // prevents overflowing
+    } else if (mainDisplay.textContent.length < 10) { // prevents user from manually overflowing display
         mainDisplay.textContent += text;
         topDisplay.textContent += text;
     }
