@@ -87,9 +87,15 @@ buttons.forEach((button) => {
                         topDisplay.textContent += ` ${buttonText} `;
                     }
                     equation.push(mainDisplay.textContent);
+                    if (equation.length === 3) { // pair of numbers exists in equation, evaluate now and clear equation
+                        curResult = operate(equation[1], equation[0], equation[2]);
+                        mainDisplay.textContent = curResult;
+                        equation = [];
+                        equation.push(curResult);
+                    }
                     equation.push(buttonText);
                     operating = true; 
-            }
+                }
         } else {
             updateDisplay(buttonText);
         }
