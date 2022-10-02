@@ -43,9 +43,11 @@ function updateDisplay(text) {
     }
 }
 
-function clearDisplay() {
+function reset() {
     mainDisplay.textContent = 0;
     topDisplay.textContent = '';
+    equation = [""];
+    completedOperation = false;
 }
 
 function negateDisplay() {
@@ -64,9 +66,7 @@ buttons.forEach((button) => {
         if (isNaN(buttonText)) {
             switch(buttonText) {
                 case 'AC': 
-                    clearDisplay();
-                    equation = [""];
-                    completedOperation = false;
+                    reset();
                     return;
                 case '+/-': 
                     negateDisplay();
