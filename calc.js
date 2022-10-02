@@ -78,6 +78,11 @@ buttons.forEach((button) => {
                     if (equation.length < 3) {
                         return;
                     }
+                    if (equation[1] == '÷' && equation[2] == 0) {
+                        alert("Cannot divide by 0!");
+                        reset();
+                        return;
+                    }
                     curResult = operate(equation[1], equation[0], equation[2]);
                     mainDisplay.textContent = curResult;
                     topDisplay.textContent += ` ${buttonText} ${curResult}`;
