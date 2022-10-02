@@ -3,7 +3,7 @@ const topDisplay = document.querySelector('.display .top pre'); // the smaller t
 let operating = false;  // if an operation is currently taking place
 let completedOperation = false; // if an operation was just completed
 let curResult = 0;  // the current saved result after an operation
-let equation = [];  // equation array with format [operand 1, operator, operand 2]
+let equation = [""];  // equation array with format [operand 1, operator, operand 2]
 
 function add(a, b) {
     return a + b;
@@ -64,7 +64,9 @@ buttons.forEach((button) => {
         if (isNaN(buttonText)) {
             switch(buttonText) {
                 case 'AC': 
-                    clearDisplay(mainDisplay);
+                    clearDisplay();
+                    equation = [""];
+                    completedOperation = false;
                     return;
                 case '+/-': 
                     negateDisplay();
@@ -73,7 +75,9 @@ buttons.forEach((button) => {
                     if (!mainDisplay.textContent.includes('.')) mainDisplay.textContent += '.';
                     return;
                 case '=':
-                    equation.push(mainDisplay.textContent);
+                    if (equation.length < 3) {
+                        return;
+                    }
                     curResult = operate(equation[1], equation[0], equation[2]);
                     mainDisplay.textContent = curResult;
                     topDisplay.textContent += ` ${buttonText} ${curResult}`;
@@ -83,10 +87,11 @@ buttons.forEach((button) => {
                 default: // an operation button was pressed
                     if (completedOperation) {
                         topDisplay.textContent = `${curResult} ${buttonText} `;
+                        equation.push(mainDisplay.textContent);
+                        completedOperation = false;
                     } else {
                         topDisplay.textContent += ` ${buttonText} `;
                     }
-                    equation.push(mainDisplay.textContent);
                     if (equation.length === 3) { // pair of numbers exists in equation, evaluate now and clear equation
                         curResult = operate(equation[1], equation[0], equation[2]);
                         mainDisplay.textContent = curResult;
@@ -97,7 +102,12 @@ buttons.forEach((button) => {
                     operating = true; 
                 }
         } else {
+            if (equation.length == 2) {
+                equation.push("");
+            }
+            equation[equation.length - 1] += buttonText;
             updateDisplay(buttonText);
         }
+        console.log(equation);
     });
 });
